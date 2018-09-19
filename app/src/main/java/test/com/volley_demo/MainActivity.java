@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String url = "https://api.myjson.com/bins/xrjo4";
+    private String url = "https://api.myjson.com/bins/1esrac";
 
     private RecyclerView mList;
 
