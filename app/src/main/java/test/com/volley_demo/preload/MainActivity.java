@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public String loadData() {
             TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("DataLoader load data");
             try {
-                Thread.sleep(2000);
+                Thread.sleep(10);
             } catch (InterruptedException ignored) {
             }
             return timeWatcher.stopAndPrint();
