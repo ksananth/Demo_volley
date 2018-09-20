@@ -8,9 +8,35 @@
     tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/containerBottom"
         android:id="@+id/main_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/containerBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/cache"
+            android:text="Cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_toRightOf="@+id/cache"
+            android:id="@+id/noCache"
+            android:text="No Cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_toRightOf="@+id/noCache"
+            android:id="@+id/clearCache"
+            android:text="Clear Cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

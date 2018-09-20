@@ -1,12 +1,15 @@
 package test.com.volley_demo;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
@@ -26,16 +29,23 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private String url = "https://api.myjson.com/bins/1esrac";
+    private String url = "https://api.myjson.com/bins/1d6hak";
 
     private RecyclerView mList;
+    private Button mCache;
+    private Button mNoCache;
+    private Button mClearCache;
 
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<Movie> movieList;
     private RecyclerView.Adapter adapter;
+    JsonArrayRequest request1;
+    JsonArrayRequest request2;
+
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,15 @@ public class MainActivity extends AppCompatActivity {
         movieList = new ArrayList<>();
         adapter = new MovieAdapter(getApplicationContext(),movieList);
 
+        mCache = (Button)findViewById(R.id.cache);
+        mNoCache = (Button)findViewById(R.id.noCache);
+        mClearCache = (Button)findViewById(R.id.clearCache);
+
+        mCache.setOnClickListener(this);
+        mNoCache.setOnClickListener(this);
+        mClearCache.setOnClickListener(this);
+
+
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
@@ -56,10 +75,28 @@ public class MainActivity extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        getData();
+        requestQueue = Volley.newRequestQueue(this);
+
+
     }
 
-    private void getData() {
+    private void getCachedData(boolean cache) {
+        request1 = getRequest();
+
+        request1.setShouldCache(cache);
+        requestQueue.add(request1);
+    }
+
+    private void getRealData(boolean cache) {
+        request2 = getRequest();
+        request2.setShouldCache(cache);
+        requestQueue.add(request2);
+
+
+    }
+
+
+    public JsonArrayRequest getRequest(){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -88,7 +125,10 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"Error !!!",1000).show();
+                movieList.clear();
                 Log.e("Volley", error.toString());
+                adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
         }) {
@@ -99,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     if (cacheEntry == null) {
                         cacheEntry = new Cache.Entry();
                     }
-                    final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
+                    final long cacheHitButRefreshed = 3 * 60 * 10; // in 3 minutes cache will be hit, but also refreshed on background
                     final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
                     long now = System.currentTimeMillis();
                     final long softExpire = now + cacheHitButRefreshed;
@@ -140,7 +180,23 @@ public class MainActivity extends AppCompatActivity {
                 return super.parseNetworkError(volleyError);
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonArrayRequest);
+        return jsonArrayRequest;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+            case R.id.cache:
+                getCachedData(true);
+                break;
+            case R.id.noCache:
+                getRealData(false);
+                break;
+            case R.id.clearCache:
+                requestQueue.getCache().invalidate(url, true);
+                break;
+
+        }
     }
 }
