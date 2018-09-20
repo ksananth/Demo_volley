@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private int preLoadForNextActivity() {
         // load data before activity launch
         // use PreLoaderPool to do this work
