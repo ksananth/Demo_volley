@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int preLoadGroupForNextActivity() {
         // load a group data before activity launch
         // use PreLoaderPool to do this work
-        return PreLoader.preLoad(new Loader1(), new Loader2());
+        return PreLoader.preLoad(new Loader1(), new Loader2(), new Loader3());
     }
 
     class Loader implements DataLoader<String> {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public String loadData() {
             TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader2 load data");
             try {
-                Thread.sleep(400);
+                Thread.sleep(2000);
             } catch (InterruptedException ignored) {
             }
             return timeWatcher.stopAndPrint();
@@ -142,6 +142,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public String keyInGroup() {
             return "loader2";
+        }
+    }
+
+    class Loader3 implements GroupedDataLoader<String> {
+        @Override
+        public String loadData() {
+            TimeWatcher timeWatcher = TimeWatcher.obtainAndStart("GroupedDataLoader3 load data");
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException ignored) {
+            }
+            return timeWatcher.stopAndPrint();
+        }
+
+        @Override
+        public String keyInGroup() {
+            return "loader3";
         }
     }
 }

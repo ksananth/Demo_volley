@@ -59,7 +59,8 @@ public class PreLoadGroupBeforeLaunchActivity extends AppCompatActivity {
         if (preLoaderId > 0) {
             PreLoader.listenData(preLoaderId
                     , new DataHolder1()
-                    , new DataHolder2()
+                    , new DataHolder2(),new DataHolder3()
+
             );
 //            PreLoader.listenData(preLoaderId, new DataHolder1());
 //            PreLoader.listenData(preLoaderId, new DataHolder2());
@@ -88,6 +89,19 @@ public class PreLoadGroupBeforeLaunchActivity extends AppCompatActivity {
         @Override
         public String keyInGroup() {
             return "loader2";
+        }
+    }
+
+    class DataHolder3 implements GroupedDataListener<String> {
+        @Override
+        public void onDataArrived(String data) {
+            String s = allTime.stopAndPrint();
+            logTextView.append(data + "\n" + s + "\n");
+        }
+
+        @Override
+        public String keyInGroup() {
+            return "loader3";
         }
     }
 
