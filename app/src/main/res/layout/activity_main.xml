@@ -36,6 +36,12 @@
             android:text="Clear Cache"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <Button
+            android:layout_toRightOf="@+id/clearCache"
+            android:id="@+id/prefetch"
+            android:text="Prefetch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 

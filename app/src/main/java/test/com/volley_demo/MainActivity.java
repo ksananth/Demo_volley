@@ -1,6 +1,7 @@
 package test.com.volley_demo;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mCache;
     private Button mNoCache;
     private Button mClearCache;
+    private Button mPrefetch;
 
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -60,10 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCache = (Button)findViewById(R.id.cache);
         mNoCache = (Button)findViewById(R.id.noCache);
         mClearCache = (Button)findViewById(R.id.clearCache);
+        mPrefetch = (Button)findViewById(R.id.prefetch);
 
         mCache.setOnClickListener(this);
         mNoCache.setOnClickListener(this);
         mClearCache.setOnClickListener(this);
+        mPrefetch.setOnClickListener(this);
 
 
         linearLayoutManager = new LinearLayoutManager(this);
@@ -195,6 +199,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.clearCache:
                 requestQueue.getCache().invalidate(url, true);
+                break;
+            case R.id.prefetch:
+                Intent intent = new Intent(this, test.com.volley_demo.preload.MainActivity.class);
+                startActivity(intent);
                 break;
 
         }
